@@ -8,9 +8,23 @@ describe  'Test setting of argument defaults' do
     }
   end
 
-  it 'Can set a single default argument' do
+  it 'can access default argument values' do
     parser = Arguments.new(yaml_hash: yaml_hash)
     expect(parser.arg1).to eq(5)
     expect(parser.arg2).to eq(7)
+  end
+
+  it 'can set argument values' do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    parser.arg1 = 10
+    expect(parser.arg1).to eq(10)
+    expect(parser.arg2).to eq(7)
+  end
+
+  it 'can parse a command line to get argument values' do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    parser.parse(%w{--arg1 2 --arg2 3})
+    expect(parser.arg1).to eq(2)
+    expect(parser.arg2).to eq(3)
   end
 end
