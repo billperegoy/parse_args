@@ -11,4 +11,4 @@ task :build_gem do
   `gem build parse_args.gemspec`
 end
 
-task :default => [:cane, :spec]
+task :default => [:spec, :cane]

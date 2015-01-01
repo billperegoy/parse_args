@@ -3,18 +3,20 @@ require 'spec_helper'
 describe  'Test setting of argument defaults' do
   let(:yaml_hash) do
     {
-      arg1: { usage: 'Arg 1 help', type: Integer,
+      arg1: { usage: 'Arg 1 help', type: 'integer',
              multi: false, default: 5, min:1, max:10 },
-      arg2: { usage: 'Arg 2 help', type: Integer,
+      arg2: { usage: 'Arg 2 help', type: 'integer',
               multi: false, default: 7, min:2, max:9 },
-      arg3: { usage: 'Arg 3 help', type: String,
+      arg3: { usage: 'Arg 3 help', type: 'string',
               multi: false, default: 'empty-string' },
-      arg4: { usage: 'Arg 4 help', type: String,
+      arg4: { usage: 'Arg 4 help', type: 'string',
               multi: true, default: [] },
-      arg5: { usage: 'Arg 5 help', type: Integer,
+      arg5: { usage: 'Arg 5 help', type: 'integer',
               multi: true, default: [] },
-      arg6: { usage: 'Arg 6 help', type: String,
-              multi: true, default: ['help', 'me'] }
+      arg6: { usage: 'Arg 6 help', type: 'string',
+              multi: true, default: ['help', 'me'] },
+      arg7: { usage: 'Arg 7 help', type: 'boolean',
+              multi: false, default: false }
     }
   end
 
@@ -66,7 +68,18 @@ describe  'Test setting of argument defaults' do
   it "rejects arguments that are not contained in valid list"
   it "allows use of alternate option name"
   it "rejects argiments that don't match a regex"
-  it "can accept boolean arguments"
+
+  it "gets proper defaults for  boolean arguments" do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    expect(parser.arg7).to eq(false)
+  end
+
+  it "can accept boolean arguments" do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    parser.parse(%w{--arg7})
+    expect(parser.arg7).to eq(true)
+  end
+
   it "defaults to false for boolean args"
   it "can use environment variables for default values"
   it "uses nil as default when none is specified"

@@ -35,15 +35,29 @@ class Arguments
   end
 
   def add_option_to_parser(opts, key, val)
+    if @yaml_hash[key][:type] == 'boolean'
+      add_boolean_option_to_parser(opts, key, val)
+    else
+      add_non_boolean_option_to_parser(opts, key, val)
+    end
+  end
+
+  def add_non_boolean_option_to_parser(opts, key, val)
     opts.on("--#{key.to_sym} VAL", val[:usage]) do |val|
-      if @yaml_hash[key][:type] == Integer
+      if @yaml_hash[key][:type] == 'integer'
         casted_val = val.to_i
-      elsif @yaml_hash[key][:type] == String
+      elsif @yaml_hash[key][:type] == 'string'
         casted_val = val.to_s
       else
         raise "Unknown argumet type: #{@yaml_hash[key][:type]}"
       end
       update_arg(key: key, val: casted_val, multi: @yaml_hash[key][:multi])
+    end
+  end
+
+  def add_boolean_option_to_parser(opts, key, val)
+    opts.on("--#{key.to_sym}", val[:usage]) do
+      @args[key] = true
     end
   end
 
