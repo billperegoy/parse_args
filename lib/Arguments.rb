@@ -6,13 +6,7 @@ class Arguments
 
   def parse(cmd_line_args)
     opt_parser = OptionParser.new do |opts|
-      opts.on('--arg1 VAL', 'Arg 1 help') do |val|
-        @args[:arg1] = val.to_i
-      end
-
-      opts.on('--arg2 VAL', 'Arg 2 help') do |val|
-        @args[:arg2] = val.to_i
-      end
+      @yaml_hash.each { |key, val| add_option_to_parser(opts, key, val) }
     end
     opt_parser.parse!(cmd_line_args)
   end
@@ -37,6 +31,32 @@ class Arguments
     name = method.to_s + '='
     self.class.send(:define_method, name.to_sym) do |val|
       @args[method] = val
+    end
+  end
+
+  def add_option_to_parser(opts, key, val)
+    opts.on("--#{key.to_sym} VAL", val[:usage]) do |val|
+      if @yaml_hash[key][:type] == Integer
+        if @yaml_hash[key][:multi]
+          if @args[key].empty?
+            @args[key] = [val.to_i]
+          else
+            @args[key] << val.to_i
+          end
+        else
+          @args[key] = val.to_i
+        end
+      else
+        if @yaml_hash[key][:multi]
+          if @args[key].empty?
+            @args[key] = [val]
+          else
+            @args[key] << val
+          end
+        else
+          @args[key] = val
+        end
+      end
     end
   end
 end
