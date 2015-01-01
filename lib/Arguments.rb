@@ -15,7 +15,7 @@ class Arguments
   def init_args_from_yaml
     @args = {}
     @yaml_hash.each do |key, val|
-      @args[key] = val[:default] 
+      @args[key] = val[:default]
       create_accessor(key)
       create_setter(key)
     end
@@ -23,7 +23,7 @@ class Arguments
 
   def create_accessor(method)
     self.class.send(:define_method, method) do
-      @args[method] 
+      @args[method]
     end
   end
 
@@ -37,26 +37,31 @@ class Arguments
   def add_option_to_parser(opts, key, val)
     opts.on("--#{key.to_sym} VAL", val[:usage]) do |val|
       if @yaml_hash[key][:type] == Integer
-        if @yaml_hash[key][:multi]
-          if @args[key].empty?
-            @args[key] = [val.to_i]
-          else
-            @args[key] << val.to_i
-          end
-        else
-          @args[key] = val.to_i
-        end
+        casted_val = val.to_i
       else
-        if @yaml_hash[key][:multi]
-          if @args[key].empty?
-            @args[key] = [val]
-          else
-            @args[key] << val
-          end
-        else
-          @args[key] = val
-        end
+        casted_val = val.to_s
       end
+      update_arg(key: key, val: casted_val, multi: @yaml_hash[key][:multi])
     end
+  end
+
+  def update_arg(key:, val:, multi: false)
+    if multi
+      update_multi_arg(key: key, val: val)
+    else
+      update_single_arg(key: key, val: val)
+    end
+  end
+
+  def update_multi_arg(key:, val:)
+    if @args[key].empty?
+      @args[key] = [val]
+    else
+      @args[key] << val
+    end
+  end
+
+  def update_single_arg(key:, val:)
+    @args[key] = val
   end
 end
