@@ -16,7 +16,11 @@ describe  'Test setting of argument defaults' do
       arg6: { usage: 'Arg 6 help', type: 'string',
               multi: true, default: ['help', 'me'] },
       arg7: { usage: 'Arg 7 help', type: 'boolean',
-              multi: false, default: false }
+              multi: false, default: false },
+      arg8: { usage: 'Arg 8 help', type: 'string',
+              multi: false },
+      arg9: { usage: 'Arg 9 help', type: 'boolean',
+              multi: false },
     }
   end
 
@@ -65,10 +69,6 @@ describe  'Test setting of argument defaults' do
     expect(parser.arg6).to eq(['help', 'me', 'hello', 'world'])
   end
 
-  it "rejects arguments that are not contained in valid list"
-  it "allows use of alternate option name"
-  it "rejects argiments that don't match a regex"
-
   it "gets proper defaults for  boolean arguments" do
     parser = Arguments.new(yaml_hash: yaml_hash)
     expect(parser.arg7).to eq(false)
@@ -80,7 +80,18 @@ describe  'Test setting of argument defaults' do
     expect(parser.arg7).to eq(true)
   end
 
-  it "defaults to false for boolean args"
+  it "defaults to false for boolean args" do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    expect(parser.arg9).to eq(false)
+  end
+
+  it "uses nil as default when none is specified" do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    expect(parser.arg8).to eq(nil)
+  end
+
   it "can use environment variables for default values"
-  it "uses nil as default when none is specified"
+  it "rejects arguments that are not contained in valid list"
+  it "allows use of alternate option name"
+  it "rejects argiments that don't match a regex"
 end

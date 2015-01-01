@@ -15,9 +15,17 @@ class Arguments
   def init_args_from_yaml
     @args = {}
     @yaml_hash.each do |key, val|
-      @args[key] = val[:default]
+      @args[key] = arg_default(val)
       create_accessor(key)
       create_setter(key)
+    end
+  end
+
+  def arg_default(val)
+    if val[:type] == 'boolean'
+      val[:default] == nil ? false : val[:default]
+    else
+      val[:default]
     end
   end
 
