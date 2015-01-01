@@ -3,7 +3,7 @@ require 'spec_helper'
 describe  'Test setting of argument defaults' do
   let(:yaml_hash) do
     {
-      arg1: { usage: 'Arg 1 help', type: 'integer',
+      arg1: { alt: '-x', usage: 'Arg 1 help', type: 'integer',
              multi: false, default: 5, min:1, max:10 },
       arg2: { usage: 'Arg 2 help', type: 'integer',
               multi: false, default: 7, min:2, max:9 },
@@ -90,8 +90,14 @@ describe  'Test setting of argument defaults' do
     expect(parser.arg8).to eq(nil)
   end
 
+  it "allows use of alternate option name" do
+    pending "Still debugging"
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    parser.parse(%w{-x 4})
+    expect(parser.arg1).to eq(4)
+  end
+
   it "can use environment variables for default values"
   it "rejects arguments that are not contained in valid list"
-  it "allows use of alternate option name"
   it "rejects argiments that don't match a regex"
 end
