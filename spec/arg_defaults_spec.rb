@@ -62,4 +62,12 @@ describe  'Test setting of argument defaults' do
     parser.parse(%w{--arg6 hello --arg6 world})
     expect(parser.arg6).to eq(['help', 'me', 'hello', 'world'])
   end
+
+  it "rejects arguments that are not contained in valid list"
+  it "allows use of alternate option name"
+  it "rejects argiments that don't match a regex"
+  it "can accept boolean arguments"
+  it "defaults to false for boolean args"
+  it "can use environment variables for default values"
+  it "uses nil as default when none is specified"
 end
