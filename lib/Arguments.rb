@@ -38,8 +38,10 @@ class Arguments
     opts.on("--#{key.to_sym} VAL", val[:usage]) do |val|
       if @yaml_hash[key][:type] == Integer
         casted_val = val.to_i
-      else
+      elsif @yaml_hash[key][:type] == String
         casted_val = val.to_s
+      else
+        raise "Unknown argumet type: #{@yaml_hash[key][:type]}"
       end
       update_arg(key: key, val: casted_val, multi: @yaml_hash[key][:multi])
     end

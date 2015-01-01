@@ -3,12 +3,18 @@ require 'spec_helper'
 describe  'Test setting of argument defaults' do
   let(:yaml_hash) do
     {
-      arg1: { usage: 'Arg 1 help', type: Integer, multi: false, default: 5, min:1, max:10 },
-      arg2: { usage: 'Arg 2 help', type: Integer, multi: false, default: 7, min:2, max:9 },
-      arg3: { usage: 'Arg 3 help', type: String, multi: false, default: 'empty-string' },
-      arg4: { usage: 'Arg 4 help', type: String, multi: true, default: [] },
-      arg5: { usage: 'Arg 5 help', type: Integer, multi: true, default: [] },
-      arg6: { usage: 'Arg 6 help', type: String, multi: true, default: ['help', 'me'] }
+      arg1: { usage: 'Arg 1 help', type: Integer,
+             multi: false, default: 5, min:1, max:10 },
+      arg2: { usage: 'Arg 2 help', type: Integer,
+              multi: false, default: 7, min:2, max:9 },
+      arg3: { usage: 'Arg 3 help', type: String,
+              multi: false, default: 'empty-string' },
+      arg4: { usage: 'Arg 4 help', type: String,
+              multi: true, default: [] },
+      arg5: { usage: 'Arg 5 help', type: Integer,
+              multi: true, default: [] },
+      arg6: { usage: 'Arg 6 help', type: String,
+              multi: true, default: ['help', 'me'] }
     }
   end
 
