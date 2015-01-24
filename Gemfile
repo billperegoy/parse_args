@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'cane'
+gem 'rake'
 gem 'rspec'
+gem "codeclimate-test-reporter", group: :test, require: nil
