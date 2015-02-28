@@ -21,6 +21,8 @@ describe  'Test setting of argument defaults' do
               multi: false },
       arg9: { usage: 'Arg 9 help', type: 'boolean',
               multi: false },
+      arg10: { usage: 'Arg 10 help', type: 'integer',
+              multi: true },
     }
   end
 
@@ -49,6 +51,12 @@ describe  'Test setting of argument defaults' do
     parser = Arguments.new(yaml_hash: yaml_hash)
     parser.parse(%w{--arg1 2 --arg2 3 --arg3 hello})
     expect(parser.arg3).to eq('hello')
+  end
+
+  it "defaults multi arguments to nil" do
+    parser = Arguments.new(yaml_hash: yaml_hash)
+    parser.parse(%w{--arg4 hello --arg4 world})
+    expect(parser.arg10).to eq([])
   end
 
   it "can handle arguments specified multiple times" do
@@ -99,5 +107,5 @@ describe  'Test setting of argument defaults' do
 
   it "can use environment variables for default values"
   it "rejects arguments that are not contained in valid list"
-  it "rejects argiments that don't match a regex"
+  it "rejects arguments that don't match a regex"
 end

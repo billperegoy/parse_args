@@ -21,12 +21,24 @@ class Arguments
     end
   end
 
-  def arg_default(val)
-    if val[:type] == 'boolean'
-      val[:default] == nil ? false : val[:default]
+  def arg_default(arg)
+    if is_boolean_arg?(arg)
+      no_default_provided?(arg)  ? false : arg[:default]
     else
-      val[:default]
+      if arg[:multi] && no_default_provided?(arg)
+        []
+      else
+        arg[:default]
+      end
     end
+  end
+
+  def no_default_provided?(arg)
+    arg[:default] == nil
+  end
+
+  def is_boolean_arg?(arg)
+    arg[:type] == 'boolean'
   end
 
   def create_accessor(method)
